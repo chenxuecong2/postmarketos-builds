@@ -1,4 +1,4 @@
-name: Build pipa images
+name: Build milan images
 on:
   push: # Build when push
   workflow_dispatch:
@@ -34,91 +34,85 @@ jobs:
       - name: Set up pmaports
         run: |
           echo -e '\n\n' | pmbootstrap init || true
-          cd ~/.local/var/pmbootstrap/cache_git/pmaports
-          git remote
-          git remote add pipa https://github.com/pipa-project/pmaports-pipa.git
-          DEFAULT_BRANCH=$(git remote show pipa | awk '/HEAD branch/ {print $NF}')
-          git fetch pipa $DEFAULT_BRANCH
-          git reset --hard pipa/$DEFAULT_BRANCH
-
-      - name: Build the xiaomi-pipa without DE
+          
+      - name: Build the huawei-milan without DE
         run: |
-           cp xiaomi-pipa.cfg ~/.config/pmbootstrap_v3.cfg
+           cp huawei-milan.cfg ~/.config/pmbootstrap_v3.cfg
            pmbootstrap install --password 147147
            pmbootstrap export
-           cp /tmp/postmarketOS-export/boot.img out/boot-xiaomi-pipa.img
-           cp /tmp/postmarketOS-export/xiaomi-pipa.img out/rootfs-xiaomi-pipa-none.img
+           cp /tmp/postmarketOS-export/boot.img out/boot-huawei-milan.img
+           cp /tmp/postmarketOS-export/huawei-milan.img out/rootfs-huawei-milan-none.img
 
-      - name: Breakpoint if tests failed for xiaomi-pipa without DE
+      - name: Breakpoint if tests failed for huawei-milan without DE
         if: failure()
         uses: namespacelabs/breakpoint-action@v0
         with:
           duration: 30m
           authorized-users: nixxizlab
       
-      - name: Upload artifacts xiaomi-pipa without DE
+      - name: Upload artifacts huawei-milan without DE
         uses: actions/upload-artifact@v4
         with:
-           name: xiaomi-pipa-none
+           name: huawei-milan-none
            path: out/*.img*
            retention-days: 7
 
-      - name: Build the xiaomi-pipa with KDE Plasma Desktop
+      - name: Build the huawei-milan with KDE Plasma Desktop
         run: |
            yes | pmbootstrap zap
            rm -r out/*
            pmbootstrap install --password 147147 --add postmarketos-ui-plasma-desktop
            cat /home/runner/.local/var/pmbootstrap/log.txt
            pmbootstrap export
-           cp /tmp/postmarketOS-export/boot.img out/boot-xiaomi-pipa.img
-           cp /tmp/postmarketOS-export/xiaomi-pipa.img out/rootfs-xiaomi-pipa-plasma.img
+           cp /tmp/postmarketOS-export/boot.img out/boot-huawei-milan.img
+           cp /tmp/postmarketOS-export/huawei-milan.img out/rootfs-huawei-milan-plasma.img
 
-      - name: Breakpoint if tests failed for xiaomi-pipa with KDE Plasma Desktop
+      - name: Breakpoint if tests failed for huawei-milan with KDE Plasma Desktop
         if: failure()
         uses: namespacelabs/breakpoint-action@v0
         with:
           duration: 30m
           authorized-users: nixxizlab
       
-      - name: Upload artifacts xiaomi-pipa with KDE Plasma Desktop
+      - name: Upload artifacts huawei-milan with KDE Plasma Desktop
         uses: actions/upload-artifact@v4
         with:
-           name: xiaomi-pipa-plasma
+           name: huawei-milan-plasma
            path: out/*.img*
            retention-days: 7
             
-      - name: Build the xiaomi-pipa with GNOME
+      - name: Build the huawei-milan with GNOME
         run: |
            yes | pmbootstrap zap
            rm -r out/*
            pmbootstrap install --password 147147 --add postmarketos-ui-gnome
            pmbootstrap export
-           cp /tmp/postmarketOS-export/boot.img out/boot-xiaomi-pipa.img
-           cp /tmp/postmarketOS-export/xiaomi-pipa.img out/rootfs-xiaomi-pipa-gnome.img
+           cp /tmp/postmarketOS-export/boot.img out/boot-huawei-milan.img
+           cp /tmp/postmarketOS-export/huawei-milan.img out/rootfs-huawei-milan-gnome.img
 
-      - name: Breakpoint if tests failed for xiaomi-pipa with GNOME
+      - name: Breakpoint if tests failed for huawei-milan with GNOME
         if: failure()
         uses: namespacelabs/breakpoint-action@v0
         with:
           duration: 30m
           authorized-users: nixxizlab
             
-      - name: Upload artifacts xiaomi-pipa with GNOME
+      - name: Upload artifacts huawei-milan with GNOME
         uses: actions/upload-artifact@v4
         with:
-           name: xiaomi-pipa-gnome
+           name: huawei-milan-gnome
            path: out/*.img*
            retention-days: 7
            
-      - name: Copy xiaomi-pipa kernel
+      - name: Copy huawei-milan kernel
         run: |
            rm -r out/*
-           cp ~/.local/var/pmbootstrap/packages/edge/aarch64/linux-postmarketos-qcom-sm8250-pipa-*.apk out/
+           cp ~/.local/var/pmbootstrap/packages/edge/aarch64/linux-postmarketos-qcom-sm8250-milan-*.apk out/
       
-      - name: Upload artifacts xiaomi-pipa kernel
+      - name: Upload artifacts huawei-milan kernel
         uses: actions/upload-artifact@v4
         with:
-           name: xiaomi-pipa-kernel
+           name: huawei-milan-kernel
            path: out/*.apk
            retention-days: 7
 
