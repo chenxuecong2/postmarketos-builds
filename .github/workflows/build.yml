@@ -103,21 +103,4 @@ jobs:
            name: huawei-milan-gnome
            path: out/*.img*
            retention-days: 7
-           
-      - name: Copy huawei-milan kernel
-        run: |
-           rm -r out/*
-           cp ~/.local/var/pmbootstrap/packages/edge/aarch64/linux-postmarketos-qcom-sm8250-milan-*.apk out/
       
-      - name: Upload artifacts huawei-milan kernel
-        uses: actions/upload-artifact@v4
-        with:
-           name: huawei-milan-kernel
-           path: out/*.apk
-           retention-days: 7
-
-
-
-        
-
-        
