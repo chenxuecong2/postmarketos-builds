@@ -57,27 +57,27 @@ jobs:
            path: out/*.img*
            retention-days: 7
 
-      - name: Build the huawei-milan with KDE Plasma Desktop
+      - name: Build the huawei-milan with Phosh Desktop
         run: |
            yes | pmbootstrap zap
            rm -r out/*
-           pmbootstrap install --password 147147 --add postmarketos-ui-plasma-desktop
+           pmbootstrap install --password 147147 --add postmarketos-ui-phosh-desktop
            cat /home/runner/.local/var/pmbootstrap/log.txt
            pmbootstrap export
            cp /tmp/postmarketOS-export/boot.img out/boot-huawei-milan.img
-           cp /tmp/postmarketOS-export/huawei-milan.img out/rootfs-huawei-milan-plasma.img
+           cp /tmp/postmarketOS-export/huawei-milan.img out/rootfs-huawei-milan-phosh.img
 
-      - name: Breakpoint if tests failed for huawei-milan with KDE Plasma Desktop
+      - name: Breakpoint if tests failed for huawei-milan with Phosh Desktop
         if: failure()
         uses: namespacelabs/breakpoint-action@v0
         with:
           duration: 30m
           authorized-users: nixxizlab
       
-      - name: Upload artifacts huawei-milan with KDE Plasma Desktop
+      - name: Upload artifacts huawei-milan with Phosh Desktop
         uses: actions/upload-artifact@v4
         with:
-           name: huawei-milan-plasma
+           name: huawei-milan-phosh
            path: out/*.img*
            retention-days: 7
             
